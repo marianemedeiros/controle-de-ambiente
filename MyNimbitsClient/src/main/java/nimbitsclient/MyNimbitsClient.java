@@ -14,6 +14,9 @@ import com.nimbits.io.helper.HelperFactory;
 import com.nimbits.io.helper.PointHelper;
 import com.nimbits.io.helper.ValueHelper;
 import com.nimbits.io.http.NimbitsClientFactory;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,46 +31,28 @@ public class MyNimbitsClient {
 
     private static NimbitsClient nimbitsClient;
     
-    public static void main(String[] args) throws SQLException, InterruptedException
+    public static void main(String[] args) throws SQLException, InterruptedException, IOException
     {
         nimbitsClient = NimbitsClientFactory.getInstance(SERVER);
         while(true) //Chama método que atualiza cada sensor a cada 30s.
         {
-            update("DHT11 temperature");
-            update("DHT11 humidity");
-            update("Light light");
-            update("PIR presence");
-            Thread.sleep(30000);
-        }
-        
-        /*
-        //PARA CONFERIR OS DADOS
-            ValueHelper valueHelper = HelperFactory.getValueHelper(SERVER);
-			System.out.println("DHT11 temperature");            
-			List<Value> listValues = valueHelper.getSeries("DHT11 temperature");
-            for (Value v: listValues)
-                System.out.println("Valor:" + v.getDoubleValue() + " Timestamp:" + String.valueOf(v.getTimestamp()));
-        
-			System.out.println("DHT11 humidity");  
-			listValues = valueHelper.getSeries("DHT11 humidity");
-            for (Value v: listValues)
-                System.out.println("Valor:" + v.getDoubleValue() + " Timestamp:" + String.valueOf(v.getTimestamp()));
+            try{
+                update("DHT11 temperature");
+                update("DHT11 humidity");
+                update("Light light");
+                update("PIR presence");
+                System.out.println("Atualizado!");
+                
+            } catch (SQLException e) {
+                System.out.println("Database Locked, Sleeping...");
+            }
 
-			System.out.println("Light light");    
-			listValues = valueHelper.getSeries("Light light");
-            for (Value v: listValues)
-                System.out.println("Valor:" + v.getDoubleValue() + " Timestamp:" + String.valueOf(v.getTimestamp()));
-
-			System.out.println("PIR presence");
-			listValues = valueHelper.getSeries("PIR presence");
-            for (Value v: listValues)
-                System.out.println("Valor:" + v.getDoubleValue() + " Timestamp:" + String.valueOf(v.getTimestamp()));
-        */
+            Thread.sleep(30000);           
+        }    
     }
     
     public static void update(String dataPoint) throws SQLException
     {
-       System.out.println("Update: " + dataPoint);
        List<Value> listValue = new ArrayList<Value>();
        Long time;
 
@@ -75,14 +60,11 @@ public class MyNimbitsClient {
        time = valueHelper.getValue(dataPoint).getTimestamp().getTime(); //Pega timestamp da última atualização do nimbits
        System.out.println("Último dataPoint: " + time.toString());
             
-       System.out.println((new Date()).getTime());
        ResultSet rs = Database.getData(dataPoint, time); //Pega ResultSet com todos dados com timestamp > time
-       System.out.println("Adicionando dados...");
        while(rs.next())
        {
            Long t = rs.getLong("time");
            Double d = rs.getDouble("value");
-           System.out.println("Dado: " + d + " timestamp" + t);
            listValue.add(ValueFactory.createValueModel(d,new Date(t))); //Adiciona todos dados do ResultSet em uma lista de Values
        }
        Database.close();
