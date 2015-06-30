@@ -7,12 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-/**
- *
- * @author marcos
- */
 public class Database {
-    private static final String DB_LOCATION = "~/pimatic-app/pimatic-database.sqlite";
+    private static final String DB_LOCATION = "/home/pi/pimatic-app/pimatic-database.sqlite";
     private static Connection connection = null;
     
     public static void open() throws SQLException
@@ -40,7 +36,6 @@ public class Database {
         + "WHERE deviceAttribute.deviceId = ? AND deviceAttribute.attributeName = ? "
         + "AND attributeValueNumber.time > ? " + "AND attributeValueNumber.deviceAttributeId = deviceAttribute.id";
         
-        System.out.println(select);
         stmt = connection.prepareStatement(select);
         stmt.setString(1, strings[0]);
         stmt.setString(2, strings[1]);
