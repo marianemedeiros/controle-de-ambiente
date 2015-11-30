@@ -26,7 +26,7 @@ MySensor gw;
 MyMessage msg(CHILD_ID_RFID, V_IR_RECEIVE);
 MyMessage msgRFID(CHILD_ID_WATT, V_VAR1);
 //Sleep sleep;
-int node_id = 8; //manual sensor_id
+int node_id = 2; //manual sensor_id
 
 void setup() {
 
