@@ -41,8 +41,8 @@ int temperaturaIdeal = 0;
 
 int nodeid = 3;
 int TRAVA = 0;
-
-int lastID = 0;
+int id=0;
+int lastID = 99;
 #define DESLIGA 0
 #define ID1 1
 #define ID2 2
@@ -62,12 +62,18 @@ void setup(){
   
   gw.sendSketchInfo("Light Sensor", "1.0");
   // Register all sensors to gateway (they will be created as child devices)
-    gw.present(CHILD_ID_LIGHT, S_LIGHT_LEVEL);
-
+  gw.present(CHILD_ID_LIGHT, S_LIGHT_LEVEL);
+  
 }
 
 void loop(){
   gw.process();
+
+  if (id != lastID) {
+      gw.send(msg.set(temperaturaIdeal));
+      lastID = id;
+  }
+
 }
 
 void gerenciaAr(int idAtual){
@@ -88,7 +94,7 @@ void gerenciaAr(int idAtual){
         }
       case DESLIGA:{
           unsigned int irSignal[] = {9000, 4500, 560, 560, 560, 560, 560};
-          temperaturaIdeal = 50;
+          temperaturaIdeal = 0;
           sendraw(irSignal);
           break;
         }             
@@ -96,7 +102,9 @@ void gerenciaAr(int idAtual){
   }
   else{
     unsigned int irSignal[] = {9000, 4500, 560, 560, 560, 560, 560};
-    temperaturaIdeal = 50;
+    temperaturaIdeal=TRAVA;
+    lastID = id;
+    id = 0;
     sendraw(irSignal);
   }
  }
@@ -109,7 +117,7 @@ void incomingMessage(const MyMessage &message){
   }
   //read: 7-0-8 s=1,c=1,t=25,pt=2,l=2:486
   if (message.type == V_VAR1){
-    int id;
+    lastID = id;
     id = message.getInt();
     if(lastID == id){
       gerenciaAr(0);
@@ -117,9 +125,7 @@ void incomingMessage(const MyMessage &message){
     }
     else{
       gerenciaAr(id);
-      lastID = id;  
-      gw.send(msg.set(temperaturaIdeal));
-      delay(1000);
+      
       Serial.println("Var1");
       Serial.println(id);
     }
@@ -128,10 +134,11 @@ void incomingMessage(const MyMessage &message){
   if (message.type == V_VAR2){
     TRAVA = message.getInt();
     if(TRAVA == 0){
-      gerenciaAr(lastID);
+      gw.send(msg.set(0));      
     }
     else{
       gerenciaAr(0);
+      gw.send(msg.set(1));
     }
   }
   
