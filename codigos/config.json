@@ -1,0 +1,200 @@
+{
+  "//": "Please only change this file when pimatic is NOT running, otherwise pimatic will overwrite your changes.",
+  "settings": {
+    "httpServer": {
+      "enabled": true,
+      "port": 8081
+    },
+    "database": {
+      "deviceAttributeLogging": [
+        {
+          "deviceId": "*",
+          "attributeName": "*",
+          "type": "*",
+          "interval": "0",
+          "expire": "7d"
+        },
+        {
+          "deviceId": "*",
+          "attributeName": "*",
+          "type": "continuous",
+          "interval": "5min",
+          "expire": "7d"
+        },
+        {
+          "deviceId": "*",
+          "attributeName": "temperature",
+          "type": "number",
+          "expire": "1y"
+        },
+        {
+          "deviceId": "*",
+          "attributeName": "humidity",
+          "type": "number",
+          "expire": "1y"
+        }
+      ],
+      "messageLogging": [
+        {
+          "level": "*",
+          "tags": [],
+          "expire": "7d"
+        },
+        {
+          "level": "debug",
+          "tags": [],
+          "expire": "0"
+        }
+      ]
+    },
+    "authentication": {
+      "secret": "mq9F7BDAUMwr6FCpxw+98obPDe81UFWxflw9oENcjKdr5ARjV2H4KpIuC0jpr09JCYWOMdJ99I66qjQtOhe61w=="
+    },
+    "httpsServer": {},
+    "gui": {}
+  },
+  "plugins": [
+    {
+      "plugin": "mail",
+      "transport": "SMTP",
+      "transportOptions": {
+        "service": "Gmail",
+        "auth": {
+          "user": "testerson.testelvina@gmail.com",
+          "pass": "123testerson"
+        }
+      },
+      "to": "testerson2.testelvina2@gmail.com"
+    },
+    {
+      "plugin": "cron"
+    },
+    {
+      "plugin": "mysensors",
+      "driver": "serialport",
+      "protocols": "1.4.1",
+      "driverOptions": {
+        "serialDevice": "/dev/ttyACM0",
+        "baudrate": 115200
+      }
+    },
+    {
+      "plugin": "mobile-frontend"
+    }
+  ],
+  "devices": [
+    {
+      "id": "TempUmi_int",
+      "name": "temperatura_umidade_interno",
+      "class": "MySensorsDHT",
+      "nodeid": 1,
+      "sensorid": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "ir",
+      "name": "infra_vermelho",
+      "class": "MySensorsLight",
+      "nodeid": 3,
+      "sensorid": 0
+    },
+    {
+      "id": "janela",
+      "name": "janela",
+      "class": "MySensorsSwitch",
+      "nodeid": 4,
+      "sensorid": 1
+    },
+    {
+      "id": "TempUmi_ext",
+      "name": "temperatura_umidade_externo",
+      "class": "MySensorsDHT",
+      "nodeid": 5,
+      "sensorid": [
+        0,
+        1
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "id": "fechar-janela",
+      "name": "Fechar Janela",
+      "rule": "if \"$TempUmi_ext.temperature\" > \"$ir.light \" then turn janela off",
+      "active": true,
+      "logging": true
+    },
+    {
+      "id": "fecha-janela-chovendo",
+      "name": "Fechar janela chovendo",
+      "rule": "if \"$TempUmi_ext.temperature\" < \"$ir.light\" and humidity of temperatura_umidade_externo > 80 then turn janela off",
+      "active": true,
+      "logging": true
+    },
+    {
+      "id": "abre-janela",
+      "name": "Abre janela ",
+      "rule": "if \"$TempUmi_ext.temperature\" < \"$ir.light\" and humidity of temperatura_umidade_externo <= 80 then turn janela on",
+      "active": true,
+      "logging": true
+    },
+    {
+      "id": "enviar-email",
+      "name": "Enviar email",
+      "rule": "if light of infra_vermelho > 1 and $ir.light changes then send mail subject:\"sala teste\" text:\"entrou na sala\"",
+      "active": false,
+      "logging": false
+    }
+  ],
+  "pages": [
+    {
+      "id": "favourite",
+      "name": "Favourites",
+      "devices": [
+        {
+          "deviceId": "TempUmi_ext"
+        },
+        {
+          "deviceId": "TempUmi_int"
+        },
+        {
+          "deviceId": "ir"
+        },
+        {
+          "deviceId": "janela"
+        }
+      ]
+    }
+  ],
+  "groups": [],
+  "users": [
+    {
+      "username": "admin",
+      "password": "admin",
+      "role": "admin"
+    }
+  ],
+  "roles": [
+    {
+      "name": "admin",
+      "permissions": {
+        "pages": "write",
+        "rules": "write",
+        "variables": "write",
+        "messages": "write",
+        "events": "write",
+        "devices": "write",
+        "groups": "write",
+        "plugins": "write",
+        "updates": "write",
+        "database": "write",
+        "config": "write",
+        "controlDevices": true,
+        "restart": true
+      }
+    }
+  ],
+  "variables": []
+}
