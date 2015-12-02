@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lom xmlns="http://ltsc.ieee.org/xsd/LOM" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ltsc.ieee.org/xsd/LOM http://ltsc.ieee.org/xsd/lomv1.0/lom.xsd">
+
+   <general>
+      <title>
+         <string language="pt-br">Sistema de identificação de usuários (professores) e ativação automática do ar-condicionado</string>
+      </title>
+      <language>pt-br</language>
+      <description>
+         <string language="pt-br">O objetivo deste trabalho é desenvolver um sistema de identificação de usuários (professores) e ativação automática do ar-condicionado, criando assim um ambiente inteligente com componentes de IoT.</string>
+      </description>
+      <keyword>
+         <string language="pt-br">Arduino</string>
+         <string language="pt-br">Pimatic</string>
+         <string language="pt-br">Internet das Coisas (IoT)</string>
+         <string language="pt-br">Sensores</string>
+         <string language="pt-br">Atuadores</string>
+         <string language="pt-br">Automatização</string>
+         <string language="pt-br">Mysensors</string>
+      </keyword>
+      <coverage>
+         <string language="pt-br">2015 - 2016</string>
+      </coverage>
+      <structure>
+         <source>LOMv1.0</source>
+         <value>networked</value>
+      </structure>
+      <aggregationLevel>
+         <source>LOMv1.0</source>
+         <value>3</value>
+      </aggregationLevel>
+   </general>
+
+
+   <lifeCycle>
+      <version>
+         <string language="pt-br">1.0</string>
+      </version>
+      <status>
+         <source>LOMv1.0</source>
+         <value>final</value>
+      </status>
+      <contribute>
+         <role>
+            <source>LOMv1.0</source>
+            <value>author</value>
+         </role>
+         <entity><![CDATA[BEGIN:VCARD
+                  VERSION:3.0
+                  N:Castro Diniz;Guilherme;;;
+                  FN:Guilherme Castro Diniz
+                  EMAIL;TYPE=INTERNET:guilhermecd@alunos.utfpr.edu.br
+                  ORG:UTFPR-CM
+                  END:VCARD]]>
+         </entity>
+         <entity><![CDATA[BEGIN:VCARD
+                  VERSION:3.0
+                  N:Affonso Medeiros;Mariane;;;
+                  FN:Mariane Affonso Medeiros
+                  EMAIL;TYPE=INTERNET:marianeaffonsomedeiros@gmail.com
+                  ORG:UTFPR-CM
+                  END:VCARD]]>
+         </entity>
+         <entity><![CDATA[BEGIN:VCARD
+                  VERSION:3.0
+                  N:Lohmann;Dougloas;;;
+                  FN:Dougloas Lohmann
+                  EMAIL;TYPE=INTERNET:dlohmann0@gmail.com
+                  ORG:UTFPR-CM
+                  END:VCARD]]>
+         </entity>
+         <entity><![CDATA[BEGIN:VCARD
+                  VERSION:3.0
+                  N:Moreira da Silva;Willian;;;
+                  FN:Willian Moreira da Silva
+                  EMAIL;TYPE=INTERNET:willianmrs@gmail.com
+                  ORG:UTFPR-CM
+                  END:VCARD]]>
+         </entity>         
+         <date>
+            <dateTime>2015</dateTime>
+         </date>
+   </lifeCycle>
+
+   <metaMetadata>
+      <contribute>
+         <role>
+            <source>LOMv1.0</source>
+            <value>creator</value>
+         </role>
+         <entity><![CDATA[BEGIN:VCARD
+                  VERSION:3.0
+                  N:Castro Diniz;Guilherme;;;
+                  FN:Guilherme Castro Diniz
+                  EMAIL;TYPE=INTERNET:guilhermecd@alunos.utfpr.edu.br
+                  ORG:UTFPR-CM
+                  END:VCARD]]>
+         </entity>
+         <entity><![CDATA[BEGIN:VCARD
+                  VERSION:3.0
+                  N:Affonso Medeiros;Mariane;;;
+                  FN:Mariane Affonso Medeiros
+                  EMAIL;TYPE=INTERNET:marianeaffonsomedeiros@gmail.com
+                  ORG:UTFPR-CM
+                  END:VCARD]]>
+         </entity>
+          <entity><![CDATA[BEGIN:VCARD
+                  VERSION:3.0
+                  N:Lohmann;Douglas;;;
+                  FN:Douglas Lohmann
+                  EMAIL;TYPE=INTERNET:dlohmann0@gmail.com
+                  ORG:UTFPR-CM
+                  END:VCARD]]>
+         </entity>
+         <entity><![CDATA[BEGIN:VCARD
+                  VERSION:3.0
+                  N:Moreira da Silva;Willian;;;
+                  FN:Willian Moreira da Silva
+                  EMAIL;TYPE=INTERNET:willianmrs@gmail.com
+                  ORG:UTFPR-CM
+                  END:VCARD]]>
+         </entity>
+         <date>
+            <dateTime>2015</dateTime>
+         </date>
+      </contribute>
+      <metadataSchema>LOMv1.0</metadataSchema>
+      <language>pt-br</language>
+   </metaMetadata>
+
+   <technical>
+      <format>text/markdown</format>
+      <format>image/png</format>
+      <format>image/jpg</format>
+      <format>application/zip</format>
+      <format>text/ino</format>
+      <location>https://github.com/marianemedeiros/controle-de-ambiente/wiki</location>
+      <location>https://github.com/marianemedeiros/controle-de-ambiente</location>
+      <requirement>
+         <orComposite>
+            <type>
+               <source>LOMv1.0</source>
+               <value>operating system</value>
+            </type>
+            <name>
+               <source>LOMv1.0</source>
+               <value>unix</value>
+            </name>
+         </orComposite>
+      </requirement>
+      <requirement>
+         <orComposite>
+            <type>
+               <source>LOMv1.0</source>
+               <value>browser</value>
+            </type>
+            <name>
+               <source>LOMv1.0</source>
+               <value>any</value>
+            </name>
+         </orComposite>
+      </requirement>
+      <installationRemarks>
+         <string language="en">Node.js</string>
+         <string language="en">Build-essential</string>
+      </installationRemarks>
+      <otherPlatformRequirements>
+         <string language="en">Pimatic</string>
+      </otherPlatformRequirements>
+      <duration>
+         <duration>P4M</duration>
+      </duration>
+   </technical>
+
+   <educational>
+      <interactivityType>
+         <source>LOMv1.0</source>
+         <value>expositive</value>
+      </interactivityType>
+      <learningResourceType>
+         <source>LOMv1.0</source>
+         <value>narrative text</value>
+      </learningResourceType>
+      <interactivityLevel>
+         <source>LOMv1.0</source>
+         <value>high</value>
+      </interactivityLevel>
+      <semanticDensity>
+         <source>LOMv1.0</source>
+         <value>medium</value>
+      </semanticDensity>
+      <intendedEndUserRole>
+         <source>LOMv1.0</source>
+         <value>author</value>
+      </intendedEndUserRole>
+      <context>
+         <source>LOMv1.0</source>
+         <value>other</value>
+      </context>
+      <typicalAgeRange>
+         <string language="pt-br">16</string>
+      </typicalAgeRange>
+      <difficulty>
+         <source>LOMv1.0</source>
+         <value>medium</value>
+      </difficulty>
+      <typicalLearningTime>
+         <duration>P7D</duration>
+      </typicalLearningTime>
+      <description>
+         <string language="pt-br">Montar a parte física e implementar a parte programavel conforme descrito nos documentos do projeto.</string>
+      </description>
+      <language>pt-br</language>
+   </educational>
+
+   <rights>
+      <cost>
+         <source>LOMv1.0</source>
+         <value>no</value>
+      </cost>
+      <copyrightAndOtherRestrictions>
+         <source>LOMv1.0</source>
+         <value>yes</value>
+      </copyrightAndOtherRestrictions>
+      <description>
+         <string language="en">Copyright (C) 2014, Douglas Lohmann, Guilherme Castro Diniz, Mariane affonso Medeiros, Willian Moreira da Silva.
+            This program is free software; you can redistribute it and/or
+            modify it under the terms of the GNU General Public License as
+            published by the Free Software Foundation (FSF); in version 2 of the
+            license.
+            This program is distributed in the hope that it can be useful,
+            but WITHOUT ANY IMPLIED WARRANTY OF ADEQUATION TO ANY
+            MARKET OR APPLICATION IN PARTICULAR. See the
+            GNU General Public License for more details.
+            &lt;http://www.gnu.org/licenses/&gt;
+         </string>
+      </description>
+   </rights>
+
+   <classification>
+      <purpose>
+         <source>LOMv1.0</source>
+         <value>educational objective</value>
+      </purpose>
+      <description>
+         <string language="pt-br">O objetivo deste trabalho é desenvolver um sistema de identificação de usuários (professores) e ativação automática do ar-condicionado, criando assim um ambiente inteligente com componentes de IoT.</string>
+      </description>
+      <keyword>
+         <string language="pt-br">Arduino</string>
+         <string language="pt-br">Pimatic</string>
+         <string language="pt-br">Internet das Coisas (IoT)</string>
+         <string language="pt-br">Sensores</string>
+         <string language="pt-br">Atuadores</string>
+         <string language="pt-br">Automatização</string>
+         <string language="pt-br">Mysensors</string>
+      </keyword>
+   </classification>
+</lom>
