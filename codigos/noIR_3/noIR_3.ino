@@ -1,31 +1,3 @@
-/**
- * The MySensors Arduino library handles the wireless radio link and protocol
- * between your home built sensors/actuators and HA controller of choice.
- * The sensors forms a self healing radio network with optional repeaters. Each
- * repeater and gateway builds a routing tables in EEPROM which keeps track of the
- * network topology allowing messages to be routed to nodes.
- *
- * Created by Henrik Ekblad <henrik.ekblad@mysensors.org>
- * Copyright (C) 2013-2015 Sensnology AB
- * Full contributor list: https://github.com/mysensors/Arduino/graphs/contributors
- *
- * Documentation: http://www.mysensors.org
- * Support Forum: http://forum.mysensors.org
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * version 2 as published by the Free Software Foundation.
- *
- *******************************
- *
- * REVISION HISTORY
- * Version 1.0 - Henrik EKblad
- *
- * DESCRIPTION
- * Example sketch showing how to measue light level using a LM393 photo-resistor
- * http://www.mysensors.org/build/light
- */
-
 #include <SPI.h>
 #include <MySensor.h>
 #include <IRremote.h>
@@ -33,7 +5,7 @@
 
 IRsend irsend;
 
-unsigned long SLEEP_TIME = 30000; // Sleep time between reads (in milliseconds)
+unsigned long SLEEP_TIME = 30000;
 MySensor gw;
 
 MyMessage msg(CHILD_ID_LIGHT, V_LIGHT_LEVEL);
@@ -48,6 +20,11 @@ int lastID = 99;
 #define ID2 2
 
 
+/**
+*   Essa função é responsável por enviar o sinal infravermelho para o ar-condicionado.
+*   Recebe como parâmetro um vetor de inteiro que contém a mensagem que será enviada ao  
+*     ar condicionado.
+**/
 void sendraw(unsigned int *irSignal) {
   int i;
   for(i = 0; i<3; i++){
@@ -61,7 +38,7 @@ void setup(){
   gw.begin(incomingMessage, nodeid);
   
   gw.sendSketchInfo("Light Sensor", "1.0");
-  // Register all sensors to gateway (they will be created as child devices)
+  // registra os sensores no gateway
   gw.present(CHILD_ID_LIGHT, S_LIGHT_LEVEL);
   
 }
@@ -69,6 +46,8 @@ void setup(){
 void loop(){
   gw.process();
 
+  // É enviado ao controlador a temperatura ideal da sala, ou seja, a temperatura que o usuário
+  // deseja no ar-condicioando. Então só enviado a temperatura novamente quando mudar de usuário.
   if (id != lastID) {
       gw.send(msg.set(temperaturaIdeal));
       lastID = id;
@@ -76,8 +55,15 @@ void loop(){
 
 }
 
+/*
+*   Essa função é responsável por enviar a mensagem correta para o ar condicionado.
+*   Recebe como parâmetro um ID para que seja possível relacionar com as configurações 
+*     personalizadas do ar condicionado de cada usuário e envia essa mensagem para
+*     a função sendraw;
+*   Caso o ID seja '0' é enviado a mensagem de desligamento para o ar condicionado.
+*
+*/
 void gerenciaAr(int idAtual){
-
  if(TRAVA == 0){
  switch (idAtual){
       case ID1:{
@@ -101,6 +87,7 @@ void gerenciaAr(int idAtual){
       }
   }
   else{
+    // Se a trava estiver ativada é enviada a mensagem de desligamento para o ar-condicionado.
     unsigned int irSignal[] = {9000, 4500, 560, 560, 560, 560, 560};
     temperaturaIdeal=TRAVA;
     lastID = id;
@@ -109,13 +96,17 @@ void gerenciaAr(int idAtual){
   }
  }
 
+
+// Essa função é responsável por receber as mensagens vindas dos outros nós.
+// V_VAR1 é a mensagem contendo o ID do usuário.
+// V_VAR2 ativa e desativa a TRAVA.
 void incomingMessage(const MyMessage &message){
   
-  // We only expect one type of message from controller. But we better check anyway.
   if (message.isAck()){
     Serial.println("This is an ack from gateway");
   }
-  //read: 7-0-8 s=1,c=1,t=25,pt=2,l=2:486
+
+  // ID do usuário.
   if (message.type == V_VAR1){
     lastID = id;
     id = message.getInt();
@@ -131,13 +122,16 @@ void incomingMessage(const MyMessage &message){
     }
   }
 
+// TRAVA
   if (message.type == V_VAR2){
     TRAVA = message.getInt();
     if(TRAVA == 0){
+      // envia 0 para o controlador (significa que a trava foi desativada e o ar está desligado)
       gw.send(msg.set(0));      
     }
     else{
       gerenciaAr(0);
+      // envia 1 para o controlador (significa que a trava foi ativada e o ar irá ser desligado)
       gw.send(msg.set(1));
     }
   }

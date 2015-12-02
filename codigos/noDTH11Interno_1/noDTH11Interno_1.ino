@@ -1,40 +1,11 @@
-/**
- * The MySensors Arduino library handles the wireless radio link and protocol
- * between your home built sensors/actuators and HA controller of choice.
- * The sensors forms a self healing radio network with optional repeaters. Each
- * repeater and gateway builds a routing tables in EEPROM which keeps track of the
- * network topology allowing messages to be routed to nodes.
- *
- * Created by Henrik Ekblad <henrik.ekblad@mysensors.org>
- * Copyright (C) 2013-2015 Sensnology AB
- * Full contributor list: https://github.com/mysensors/Arduino/graphs/contributors
- *
- * Documentation: http://www.mysensors.org
- * Support Forum: http://forum.mysensors.org
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * version 2 as published by the Free Software Foundation.
- *
- *******************************
- *
- * REVISION HISTORY
- * Version 1.0 - Henrik EKblad
- * 
- * DESCRIPTION
- * This sketch provides an example how to implement a humidity/temperature
- * sensor using DHT11/DHT-22 
- * http://www.mysensors.org/build/humidity
- */
- 
 #include <SPI.h>
 #include <MySensor.h>  
 #include <DHT.h>  
 
-#define CHILD_ID_HUM 0
-#define CHILD_ID_TEMP 1
+#define CHILD_ID_HUM 0 //ID do sensor filho (umidade)
+#define CHILD_ID_TEMP 1 //ID do sensor filho (temperatura)
 #define HUMIDITY_SENSOR_DIGITAL_PIN 3
-unsigned long SLEEP_TIME = 30000; // Sleep time between reads (in milliseconds)
+unsigned long SLEEP_TIME = 30000;
 
 MySensor gw;
 DHT dht;
@@ -47,13 +18,14 @@ MyMessage msgTemp(CHILD_ID_TEMP, V_TEMP);
 int node_id = 1;
 void setup()  
 { 
+  // Inicia a biblioteca mysensor com o ID do dispositivo.
   gw.begin(NULL, node_id);
   dht.setup(HUMIDITY_SENSOR_DIGITAL_PIN); 
 
-  // Send the Sketch Version Information to the Gateway
+  // Manda a informaçao de versão do esquemático para o gateway e o controlador
   gw.sendSketchInfo("Humidity", "1.0");
 
-  // Register all sensors to gw (they will be created as child devices)
+  // Registra todos os sensores no gateway (eles serão criados como dispositivos filhos)
   gw.present(CHILD_ID_HUM, S_HUM);
   gw.present(CHILD_ID_TEMP, S_TEMP);
   
@@ -87,7 +59,7 @@ void loop()
       Serial.println(humidity);
   }
 
-  gw.sleep(SLEEP_TIME); //sleep a bit
+  gw.sleep(SLEEP_TIME); //Dorme um pouco
 }
 
 
